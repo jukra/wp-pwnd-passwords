@@ -67,12 +67,12 @@ class WP_Pwnd_Passwords {
     public function check_pwnd_password( $errors ) {
         // First check that the passwords are set
         if ( isset( $_POST['pass1'] ) && isset( $_POST['pass2'] ) ) {
-            $response = wp_remote_get( 'https://api.pwnedpasswords.com/pwnedpassword/' . $_POST['pass1'] );
+            $response = wp_remote_get( 'https://api.pwnedpasswords.com/pwnedpassword/' . sha1($_POST['pass1']) );
                 // If we get an error when calling the API, let the password validate
                 // so that we don't block password reset when downtime
                 if ( ! is_wp_error( $response ) && ( isset( $response['response']['code'] ) ) ) {
                     // The API pwndpasswords.com API returns 404 when password is not pwnd yet
-                    if ( $response['response']['code'] !== 404 ) {
+                    if ( $response['response']['code'] !== 404 && $response['response']['code'] !== 500 ) {
                         // If the password is found, add the validation error
                         $errors->add( 'password_pwnd', __( 'This password has previously appeared in a data breach and should never be used.', 'wp-pwnd-passwords' ) );
                     }
