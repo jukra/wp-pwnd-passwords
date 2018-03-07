@@ -1,8 +1,8 @@
 {
-  "name": "jukkarau/wp-pwnd-passwords",
+  "name": "jukra/wp-pwnd-passwords",
   "description": "Check passwords against known pwnd passwords",
   "type": "wordpress-plugin",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Jukka Rautanen",
