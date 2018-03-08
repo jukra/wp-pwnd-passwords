@@ -67,16 +67,22 @@ class WP_Pwnd_Passwords {
     public function check_pwnd_password( $errors ) {
         // First check that the passwords are set
         if ( isset( $_POST['pass1'] ) && isset( $_POST['pass2'] ) ) {
-            $response = wp_remote_get( 'https://api.pwnedpasswords.com/pwnedpassword/' . sha1($_POST['pass1']) );
-                // If we get an error when calling the API, let the password validate
-                // so that we don't block password reset when downtime
-                if ( ! is_wp_error( $response ) && ( isset( $response['response']['code'] ) ) ) {
-                    // The API pwndpasswords.com API returns 404 when password is not pwnd yet
-                    if ( $response['response']['code'] !== 404 && $response['response']['code'] !== 500 ) {
-                        // If the password is found, add the validation error
-                        $errors->add( 'password_pwnd', __( 'This password has previously appeared in a data breach and should never be used.', 'wp-pwnd-passwords' ) );
-                    }
+            $hash = sha1($_POST['pass1']);
+            $prefix = substr($hash, 0, 5);
+            $suffix = substr($hash, 5);
+            $response = wp_remote_get( 'https://api.pwnedpasswords.com/range/' . $prefix );
+            // If we get an error when calling the API, let the password validate
+            // so that we don't block password reset when downtime
+            if ( ! is_wp_error( $response ) && ( isset( $response['response']['code'] ) ) ) {
+                // When a password hash with the same first 5 characters is found in the Pwned Passwords repository, the API will respond with an HTTP 200 and include the suffix of every hash beginning with the specified prefix, followed by a count of how many times it appears in the data set.
+                // Check response to see if there's a match.
+                $regex = "/" . $suffix . ":(\d+)/i";
+                if ( preg_match($regex, $response["body"], $matches) ) {
+                    $errors->add( 'password_pwnd', __( 'This password has previously appeared in a data breach and should never be used.', 'wp-pwnd-passwords' ) );
+                } else {
+                    return 0;
                 }
+            }
         }
     }
 
