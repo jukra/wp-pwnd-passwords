@@ -79,8 +79,6 @@ class WP_Pwnd_Passwords {
                 $regex = "/" . $suffix . ":(\d+)/i";
                 if ( preg_match($regex, $response["body"], $matches) ) {
                     $errors->add( 'password_pwnd', __( 'This password has previously appeared in a data breach and should never be used.', 'wp-pwnd-passwords' ) );
-                } else {
-                    return 0;
                 }
             }
         }
