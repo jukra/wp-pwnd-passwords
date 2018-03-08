@@ -4,7 +4,7 @@ Check WordPress user passwords against passwords previously appeared in data bre
 
 ## Features
 
-- Uses [Pwnd Passwords API](https://haveibeenpwned.com/Passwords) to check the passwords
+- Uses [Pwnd Passwords API](https://haveibeenpwned.com/Passwords) range search to check the passwords
 - Validates passwords on WordPress password reset form
 - Validates passwords on WordPress user edit page
 

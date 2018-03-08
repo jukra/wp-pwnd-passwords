@@ -3,7 +3,7 @@
  * Plugin name: WP Pwnd Passwords
  * Plugin URI: https://github.com/jukra/wp-pwnd-passwords
  * Description: Check WordPress user passwords against passwords previously appeared in data breaches.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Jukka Rautanen
  * Author URI: https://github.com/jukra/
  * License: GPLv3
@@ -30,7 +30,7 @@
 
 if ( ! class_exists( 'WP_Pwnd_Passwords' ) ) :
 
-define( 'WPPP_VERSION', '1.0.0' );
+define( 'WPPP_VERSION', '1.1.0' );
 
 class WP_Pwnd_Passwords {
     public static $instance;
